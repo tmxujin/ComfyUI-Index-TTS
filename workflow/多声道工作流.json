@@ -1,0 +1,661 @@
+{
+  "id": "4befba43-1b1b-4b0a-8d39-d12db9556ed7",
+  "revision": 0,
+  "last_node_id": 13,
+  "last_link_id": 12,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "String Literal",
+      "pos": [
+        -826.4762573242188,
+        8.511809349060059
+      ],
+      "size": [
+        427.5860595703125,
+        515.1315307617188
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-image-saver",
+        "ver": "65e6903eff274a50f8b5cd768f0f96baf37baea1",
+        "Node name for S&R": "String Literal"
+      },
+      "widgets_values": [
+        "<Character1>“新闻里说明天要降温了，我的老寒腿又该不舒服了。”</Character1>\n<Character2>“爸，给您买的护膝要记得用，别嫌麻烦。”</Character2>\n<Character3>“小明，明天多穿件毛衣，听见没有？”</Character3>\n<Character4>“知道啦妈，您都说八遍了！”</Character4>"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "pos": [
+        -718.2699584960938,
+        557.5363159179688
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "清澈弟弟.mp3",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 3,
+      "type": "LoadAudio",
+      "pos": [
+        -377.74969482421875,
+        16.38648796081543
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "御姐配音.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LoadAudio",
+      "pos": [
+        -388.93011474609375,
+        196.08892822265625
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "北京大爷.mp3",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 5,
+      "type": "LoadAudio",
+      "pos": [
+        -368.85076904296875,
+        371.63848876953125
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "温润男声.mp3",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 6,
+      "type": "LoadAudio",
+      "pos": [
+        -366.25189208984375,
+        548.1714477539062
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "御姐配音.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 8,
+      "type": "SaveAudio",
+      "pos": [
+        898.56201171875,
+        4.003594398498535
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 7
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI_combined"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "SaveAudio",
+      "pos": [
+        502.66204833984375,
+        100.71835327148438
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 8
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI_narrator"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "SaveAudio",
+      "pos": [
+        511.2101745605469,
+        264.4273986816406
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 9
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI_character1"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "SaveAudio",
+      "pos": [
+        508.8397521972656,
+        428.896240234375
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 10
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI_character2"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "SaveAudio",
+      "pos": [
+        528.2423095703125,
+        575.045166015625
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 11
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI_character2"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "SaveAudio",
+      "pos": [
+        827.0618286132812,
+        558.9205932617188
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 12
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI_character2"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "IndexTTSProMultiChannelNode",
+      "pos": [
+        -43.90217208862305,
+        22.46730613708496
+      ],
+      "size": [
+        400,
+        600
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "narrator_audio",
+          "type": "AUDIO",
+          "link": 1
+        },
+        {
+          "name": "character1_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 2
+        },
+        {
+          "name": "character2_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 3
+        },
+        {
+          "name": "character3_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 4
+        },
+        {
+          "name": "character4_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 5
+        },
+        {
+          "name": "character5_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "structured_text",
+          "type": "STRING",
+          "widget": {
+            "name": "structured_text"
+          },
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "combined_audio",
+          "type": "AUDIO",
+          "links": [
+            7
+          ]
+        },
+        {
+          "name": "narrator_audio_out",
+          "type": "AUDIO",
+          "links": [
+            8
+          ]
+        },
+        {
+          "name": "character1_audio_out",
+          "type": "AUDIO",
+          "links": [
+            9
+          ]
+        },
+        {
+          "name": "character2_audio_out",
+          "type": "AUDIO",
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "character3_audio_out",
+          "type": "AUDIO",
+          "links": [
+            11
+          ]
+        },
+        {
+          "name": "character4_audio_out",
+          "type": "AUDIO",
+          "links": [
+            12
+          ]
+        },
+        {
+          "name": "character5_audio_out",
+          "type": "AUDIO",
+          "links": null
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "Subtitle",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "SimplifiedSubtitle",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "aux_id": "chenpipi0807/ComfyUI-Index-TTS",
+        "ver": "074b8a838b84d57500b38167a5dbb72d99965e32",
+        "Node name for S&R": "IndexTTSProMultiChannelNode"
+      },
+      "widgets_values": [
+        "多声道工作流，主声道输出所有的声音，另外的声道输出每个角色的声音，所有声音对齐，可双制作立体声，可以每个声道控制数字人，可以在元宇宙中控制角色。",
+        "IndexTTS-1.5",
+        "auto",
+        1,
+        2603958371,
+        "randomize",
+        1,
+        0.8,
+        30,
+        10,
+        0,
+        3,
+        600
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      3,
+      0,
+      7,
+      0,
+      "AUDIO"
+    ],
+    [
+      2,
+      4,
+      0,
+      7,
+      1,
+      "AUDIO"
+    ],
+    [
+      3,
+      5,
+      0,
+      7,
+      2,
+      "AUDIO"
+    ],
+    [
+      4,
+      6,
+      0,
+      7,
+      3,
+      "AUDIO"
+    ],
+    [
+      5,
+      2,
+      0,
+      7,
+      4,
+      "AUDIO"
+    ],
+    [
+      6,
+      1,
+      0,
+      7,
+      6,
+      "STRING"
+    ],
+    [
+      7,
+      7,
+      0,
+      8,
+      0,
+      "AUDIO"
+    ],
+    [
+      8,
+      7,
+      1,
+      9,
+      0,
+      "AUDIO"
+    ],
+    [
+      9,
+      7,
+      2,
+      10,
+      0,
+      "AUDIO"
+    ],
+    [
+      10,
+      7,
+      3,
+      11,
+      0,
+      "AUDIO"
+    ],
+    [
+      11,
+      7,
+      4,
+      12,
+      0,
+      "AUDIO"
+    ],
+    [
+      12,
+      7,
+      5,
+      13,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.564473930053779,
+      "offset": [
+        747.7817551615395,
+        224.52136519030694
+      ]
+    },
+    "frontendVersion": "1.27.7",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

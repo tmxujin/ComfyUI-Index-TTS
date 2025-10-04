@@ -1,0 +1,355 @@
+{
+  "id": "9a68dd3b-2325-410c-a6f9-dd809511c4c4",
+  "revision": 0,
+  "last_node_id": 465,
+  "last_link_id": 482,
+  "nodes": [
+    {
+      "id": 455,
+      "type": "IndexTTSProNode",
+      "pos": [
+        641.401611328125,
+        -716.3160400390625
+      ],
+      "size": [
+        400,
+        476
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "narrator_audio",
+          "type": "AUDIO",
+          "link": 478
+        },
+        {
+          "name": "character1_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 479
+        },
+        {
+          "name": "character2_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 480
+        },
+        {
+          "name": "character3_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "character4_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "character5_audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": null
+        },
+        {
+          "name": "structured_text",
+          "type": "STRING",
+          "widget": {
+            "name": "structured_text"
+          },
+          "link": 482
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            477
+          ]
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "Subtitle",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "SimplifiedSubtitle",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "aux_id": "chenpipi0807/ComfyUI-Index-TTS",
+        "ver": "074b8a838b84d57500b38167a5dbb72d99965e32",
+        "Node name for S&R": "IndexTTSProNode"
+      },
+      "widgets_values": [
+        "<正文>这是一段正文示例。<角色1>你好。<正文>他说道。",
+        "IndexTTS-1.5",
+        "auto",
+        1,
+        2603958371,
+        "randomize",
+        1,
+        0.8,
+        30,
+        10,
+        0,
+        3,
+        600
+      ]
+    },
+    {
+      "id": 459,
+      "type": "LoadAudio",
+      "pos": [
+        259.357666015625,
+        -496.0368957519531
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            479
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "凡人修仙传-紫灵.mp3",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 460,
+      "type": "LoadAudio",
+      "pos": [
+        253.59197998046875,
+        -283.8289794921875
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            480
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "恋与深空-秦彻.WAV",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 461,
+      "type": "LoadAudio",
+      "pos": [
+        259.11212158203125,
+        -717.91748046875
+      ],
+      "size": [
+        270,
+        136
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            478
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "御姐配音.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 462,
+      "type": "SaveAudio",
+      "pos": [
+        1095.338134765625,
+        -714.6515502929688
+      ],
+      "size": [
+        270,
+        112
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 477
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "SaveAudio"
+      },
+      "widgets_values": [
+        "audio/ComfyUI"
+      ]
+    },
+    {
+      "id": 465,
+      "type": "String Literal",
+      "pos": [
+        -221.28465270996094,
+        -731.2802124023438
+      ],
+      "size": [
+        441.81292724609375,
+        636.3744506835938
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            482
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-image-saver",
+        "ver": "65e6903eff274a50f8b5cd768f0f96baf37baea1",
+        "Node name for S&R": "String Literal"
+      },
+      "widgets_values": [
+        "<Narrator>少女此时就站在院墙那边，她有一双杏眼，怯怯弱弱。</Narrator>\n<Narrator>院门那边，有个嗓音说：</Narrator>\n<Character1>“你这婢女卖不卖？”</Character1>\n<Narrator>宋集薪愣了愣，循着声音转头望去，是个眉眼含笑的锦衣少年，站在院外，一张全然陌生的面孔。</Narrator>\n<Narrator>锦衣少年身边站着一位身材高大的老者，面容白皙，脸色和蔼，轻轻眯眼打量着两座毗邻院落的少年少女。</Narrator>\n<Narrator>老者的视线在陈平安一扫而过，并无停滞，但是在宋集薪和婢女身上，多有停留，笑意渐渐浓郁。</Narrator>\n<Narrator>宋集薪斜眼道：</Narrator>\n<Character2>“卖！怎么不卖！”</Character2>\n<Narrator>那少年微笑道：</Narrator>\n<Character1>“那你说个价。”</Character1>\n<Narrator>少女瞪大眼眸，满脸匪夷所思，像一头惊慌失措的年幼麋鹿。</Narrator>\n<Narrator>宋集薪翻了个白眼，伸出一根手指，晃了晃，</Narrator>\n<Character2>“白银一万两！”</Character2>\n<Narrator>锦衣少年脸色如常，点头道：</Narrator>\n<Character1>“好。”</Character1>\n<Narrator>宋集薪见那少年不像是开玩笑的样子，连忙改口道：</Narrator>\n<Character2>“是黄金万两！”</Character2>\n<Narrator>锦衣少年嘴角翘起，道：</Narrator>\n<Character1>“逗你玩的。”</Character1>\n<Narrator>宋集薪脸色阴沉。</Narrator>"
+      ]
+    }
+  ],
+  "links": [
+    [
+      477,
+      455,
+      0,
+      462,
+      0,
+      "AUDIO"
+    ],
+    [
+      478,
+      461,
+      0,
+      455,
+      0,
+      "AUDIO"
+    ],
+    [
+      479,
+      459,
+      0,
+      455,
+      1,
+      "AUDIO"
+    ],
+    [
+      480,
+      460,
+      0,
+      455,
+      2,
+      "AUDIO"
+    ],
+    [
+      482,
+      465,
+      0,
+      455,
+      6,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 2,
+      "title": "多人对话核心节点示例",
+      "bounding": [
+        -231.2847137451172,
+        -804.8801879882812,
+        1606.622802734375,
+        719.9744262695312
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7247295000000004,
+      "offset": [
+        235.16702263280865,
+        873.2825645673599
+      ]
+    },
+    "frontendVersion": "1.27.7",
+    "ue_links": [],
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
