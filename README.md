@@ -24,6 +24,8 @@
 - 支持调节语速（原版不支持后处理实现效果会有一点折损）
 - 多种音频合成参数控制
 - Windows兼容（无需额外依赖）
+- 支持结构化字幕和SRT字幕的批处理迭代
+- 支持多角色字幕的解析和处理
 
 
 ## 废话两句
@@ -59,6 +61,14 @@
 - pro节点新增了对于字幕的json输出，感谢@qy8502提供的玩法思路
 
 ![image](https://github.com/user-attachments/assets/e7f5e92a-7f76-48a1-ba01-86143d10d359)
+
+### 新增字幕处理节点
+
+- 新增Enhanced Subtitle Batch Iterator节点，支持SRT和JSON格式字幕的批处理迭代
+- 新增Subtitle Text Formatter节点，用于格式化字幕文本
+- 支持多角色字幕处理，可自动分配角色ID和mask索引
+- 支持旁白自动标记为角色0
+- 提供字幕时间轴解析和格式化功能
 
 
 ### 2025-06-05

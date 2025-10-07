@@ -18,6 +18,7 @@ from .audio_enhancement import AudioCleanupNode
 from .timbre_audio_loader import TimbreAudioLoader
 from .novel_text_parser import NovelTextStructureNode  # 导入小说文本结构化节点
 from .index_tts_pro import IndexTTSProNode, IndexTTSProMultiChannelNode  # 导入增强版TTS节点
+from .subtitle_processor import EnhancedSubtitleBatchIterator, SubtitleTextFormatter  # 导入字幕处理节点
 
 # 注册ComfyUI节点
 NODE_CLASS_MAPPINGS = {
@@ -27,6 +28,8 @@ NODE_CLASS_MAPPINGS = {
     "NovelTextStructureNode": NovelTextStructureNode,  # 添加小说文本结构化节点
     "IndexTTSProNode": IndexTTSProNode,             # 添加增强版TTS节点
     "IndexTTSProMultiChannelNode": IndexTTSProMultiChannelNode,  # 添加多声道TTS节点
+    "EnhancedSubtitleBatchIterator": EnhancedSubtitleBatchIterator,  # 添加字幕批处理迭代器节点
+    "SubtitleTextFormatter": SubtitleTextFormatter,  # 添加字幕文本格式化器节点
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -36,6 +39,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "NovelTextStructureNode": "小说文本结构化",   # 添加小说文本结构化节点显示名称
     "IndexTTSProNode": "Index TTS Pro",         # 添加增强版TTS节点显示名称
     "IndexTTSProMultiChannelNode": "Index TTS Pro Multi-Channel",  # 添加多声道TTS节点显示名称
+    "EnhancedSubtitleBatchIterator": "Enhanced Subtitle Batch Iterator",  # 添加字幕批处理迭代器节点显示名称
+    "SubtitleTextFormatter": "Subtitle Text Formatter",  # 添加字幕文本格式化器节点显示名称
 }
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
