@@ -1,6 +1,6 @@
 """
-ComfyUI Enhanced Subtitle Batch Iterator
-增强版字幕批处理迭代器 - 支持SRT和结构化字幕
+ComfyUI Enhanced Subtitle Batch Iterator - 批量输出模式
+增强版字幕批处理迭代器 - 一次性输出所有片段，ComfyUI自动批处理
 """
 
 import json
@@ -10,17 +10,14 @@ from typing import Dict, List, Tuple, Optional
 
 class EnhancedSubtitleBatchIterator:
     """
-    增强版字幕批处理迭代器
-    功能:
-    1. 支持SRT格式字幕(自动解析为角色0)
-    2. 支持结构化JSON字幕(支持多角色)
-    3. 旁白不忽略,统一标注为角色0
-    4. 输出歌词文本供后期字幕使用
-    5. 整合解析和迭代功能于一体
-    """
+    增强版字幕批处理迭代器 - 批量输出模式
     
-    # 类级别状态存储
-    _state = {}
+    核心变化：
+    1. 一次性解析所有片段
+    2. 返回列表而不是单个值
+    3. ComfyUI会自动对每个元素执行一次工作流
+    4. 新增total_iterations输出，方便循环节点使用
+    """
     
     @classmethod
     def INPUT_TYPES(cls):
@@ -34,68 +31,73 @@ class EnhancedSubtitleBatchIterator:
                 "subtitle_type": (["auto", "srt", "json"], {
                     "default": "auto"
                 }),
-                "reset_iterator": ("BOOLEAN", {
-                    "default": False
-                })
             },
             "optional": {
                 "narrator_as_character_0": ("BOOLEAN", {
                     "default": True
+                }),
+                "filter_narrator": ("BOOLEAN", {
+                    "default": False,
+                    "label_on": "过滤旁白",
+                    "label_off": "保留旁白"
                 })
             }
         }
     
-    RETURN_TYPES = ("STRING", "INT", "FLOAT", "FLOAT", "STRING", "INT", "INT", "BOOLEAN", "STRING")
-    RETURN_NAMES = ("character_id", "mask_index", "start_time", "end_time", 
-                    "subtitle_text", "current_index", "total_count", "is_finished", "debug_info")
-    FUNCTION = "execute"
+    # 🔥 关键改变：返回类型全部改为列表
+    RETURN_TYPES = ("INT", "STRING", "FLOAT", "FLOAT", "STRING", "INT")
+    RETURN_NAMES = ("mask_index", "character_id", "start_time", "end_time", 
+                    "subtitle_text", "total_iterations")
+    FUNCTION = "execute_batch"
     CATEGORY = "MultiCharacter/Batch"
     
-    def execute(self, subtitle_text: str, subtitle_type: str = "auto", 
-                reset_iterator: bool = False, narrator_as_character_0: bool = True):
-        """执行字幕解析和迭代"""
+    # 🔥 关键标记：允许批量输出
+    OUTPUT_IS_LIST = (True, True, True, True, True, False)
+    
+    def execute_batch(self, subtitle_text: str, subtitle_type: str = "auto", 
+                     narrator_as_character_0: bool = True,
+                     filter_narrator: bool = False):
+        """批量执行 - 一次性返回所有片段"""
         
-        key = id(self)
+        # 1. 解析字幕
+        parsed_data = self._parse_subtitle(subtitle_text, subtitle_type, narrator_as_character_0)
         
-        # 重置或首次运行时解析字幕
-        if reset_iterator or key not in self._state:
-            parsed_data = self._parse_subtitle(subtitle_text, subtitle_type, narrator_as_character_0)
-            self._state[key] = {
-                "data": parsed_data,
-                "index": 0,
-                "total": len(parsed_data)
-            }
-            print(f"✅ 字幕解析完成: {len(parsed_data)} 个片段")
+        if not parsed_data:
+            print("❌ 字幕解析失败或数据为空")
+            return ([0], ["0"], [0.0], [0.0], [""], 0)
         
-        state = self._state[key]
-        idx = state["index"]
-        total = state["total"]
+        # 2. 过滤旁白（如果需要）
+        if filter_narrator:
+            parsed_data = [seg for seg in parsed_data if seg["mask_index"] != 0]
         
-        # 检查是否完成
-        if idx >= total:
-            debug = f"✅ 批处理完成: {total}/{total}"
-            print(debug)
-            return ("0", 0, 0.0, 0.0, "", idx, total, True, debug)
+        total = len(parsed_data)
+        print(f"✅ 批量模式启动: {total} 个片段")
         
-        # 获取当前片段
-        seg = state["data"][idx]
-        state["index"] += 1
+        # 3. 提取所有数据为列表
+        mask_indices = []
+        character_ids = []
+        start_times = []
+        end_times = []
+        subtitles = []
         
-        is_finished = (state["index"] >= total)
+        for i, seg in enumerate(parsed_data):
+            mask_indices.append(seg["mask_index"])
+            character_ids.append(seg["character_id"])
+            start_times.append(seg["start_time"])
+            end_times.append(seg["end_time"])
+            subtitles.append(seg["subtitle"])
+            
+            print(f"  [{i+1}/{total}] 角色{seg['character_id']} (mask={seg['mask_index']}) | "
+                  f"{seg['start_time']:.2f}s-{seg['end_time']:.2f}s | {seg['subtitle'][:30]}...")
         
-        debug = f"🎬 [{idx+1}/{total}] 角色{seg['character_id']} | {seg['start_time']:.2f}s-{seg['end_time']:.2f}s | {seg['subtitle'][:30]}..."
-        print(debug)
-        
+        # 4. 返回列表 + 总次数
         return (
-            seg["character_id"],
-            seg["mask_index"],
-            seg["start_time"],
-            seg["end_time"],
-            seg["subtitle"],
-            idx + 1,  # current_index (1-based)
-            total,
-            is_finished,
-            debug
+            mask_indices,    # [1, 2, 3, 1, 2, ...]
+            character_ids,   # ["Character1", "Character2", ...]
+            start_times,     # [0.0, 3.5, 7.2, ...]
+            end_times,       # [3.5, 7.2, 10.8, ...]
+            subtitles,       # ["文本1", "文本2", ...]
+            total            # 总片段数（单个整数，不是列表）
         )
     
     def _parse_subtitle(self, text: str, subtitle_type: str, narrator_as_char0: bool) -> List[Dict]:
@@ -128,10 +130,8 @@ class EnhancedSubtitleBatchIterator:
         next_mask = 1
         
         # 处理JSON数据，支持两种格式
-        # 格式1: 直接是数组
         if isinstance(data, list):
             items = data
-        # 格式2: 包含segments字段的对象
         elif isinstance(data, dict) and "segments" in data:
             items = data["segments"]
         else:
@@ -156,8 +156,8 @@ class EnhancedSubtitleBatchIterator:
             start_time_str = item.get("start", item.get("start_time", "0:00.000"))
             end_time_str = item.get("end", item.get("end_time", "0:00.000"))
             
-            start = self._parse_time(start_time_str)
-            end = self._parse_time(end_time_str)
+            start = self._parse_time(str(start_time_str))
+            end = self._parse_time(str(end_time_str))
             
             # 支持多种字幕字段名称
             subtitle_text = item.get("字幕", item.get("text", item.get("subtitle", "")))
@@ -183,7 +183,11 @@ class EnhancedSubtitleBatchIterator:
                 continue
             
             # 解析时间轴 "00:00:13,952 --> 00:00:21,845"
-            time_match = re.search(r'(\d{2}):(\d{2}):(\d{2})[,\.](\d{3})\s*-->\s*(\d{2}):(\d{2}):(\d{2})[,\.](\d{3})', lines[1])
+            time_match = re.search(
+                r'(\d{2}):(\d{2}):(\d{2})[,\.](\d{3})\s*-->\s*'
+                r'(\d{2}):(\d{2}):(\d{2})[,\.](\d{3})', 
+                lines[1]
+            )
             if not time_match:
                 continue
             
@@ -208,15 +212,25 @@ class EnhancedSubtitleBatchIterator:
     
     def _parse_time(self, time_str: str) -> float:
         """解析时间字符串 M:SS.mmm -> 秒数"""
-        match = re.match(r'(\d+):(\d+)\.(\d+)', time_str.strip())
+        time_str = str(time_str).strip()
+        
+        # 格式1: M:SS.mmm 或 MM:SS.mmm
+        match = re.match(r'(\d+):(\d+)\.(\d+)', time_str)
         if match:
             m, s, ms = int(match.group(1)), int(match.group(2)), int(match.group(3))
             return m * 60 + s + ms / 1000.0
+        
+        # 格式2: HH:MM:SS.mmm
+        match = re.match(r'(\d+):(\d+):(\d+)\.(\d+)', time_str)
+        if match:
+            h, m, s, ms = int(match.group(1)), int(match.group(2)), int(match.group(3)), int(match.group(4))
+            return h * 3600 + m * 60 + s + ms / 1000.0
+        
         return 0.0
 
 
 # ============================================================
-# 辅助节点: 字幕文本格式化器
+# 辅助节点: 字幕文本格式化器 (保持不变)
 # ============================================================
 
 class SubtitleTextFormatter:
@@ -271,15 +285,59 @@ class SubtitleTextFormatter:
 
 
 # ============================================================
+# 新增节点: 批次索引生成器
+# ============================================================
+
+class BatchIndexGenerator:
+    """
+    批次索引生成器
+    根据total_iterations生成索引列表 [0, 1, 2, 3, ...]
+    用于需要显式索引的场景
+    """
+    
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "total_iterations": ("INT", {
+                    "default": 1,
+                    "min": 1,
+                    "max": 10000,
+                    "forceInput": True
+                }),
+                "start_from": ("INT", {
+                    "default": 0,
+                    "min": 0,
+                    "max": 1000
+                })
+            }
+        }
+    
+    RETURN_TYPES = ("INT",)
+    RETURN_NAMES = ("index",)
+    FUNCTION = "generate"
+    CATEGORY = "MultiCharacter/Batch"
+    OUTPUT_IS_LIST = (True,)
+    
+    def generate(self, total_iterations: int, start_from: int = 0):
+        """生成索引列表"""
+        indices = list(range(start_from, start_from + total_iterations))
+        print(f"🔢 生成索引: {indices[:10]}{'...' if len(indices) > 10 else ''}")
+        return (indices,)
+
+
+# ============================================================
 # ComfyUI节点注册
 # ============================================================
 
 NODE_CLASS_MAPPINGS = {
     "EnhancedSubtitleBatchIterator": EnhancedSubtitleBatchIterator,
-    "SubtitleTextFormatter": SubtitleTextFormatter
+    "SubtitleTextFormatter": SubtitleTextFormatter,
+    "BatchIndexGenerator": BatchIndexGenerator,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "EnhancedSubtitleBatchIterator": "Enhanced Subtitle Batch Iterator",
-    "SubtitleTextFormatter": "Subtitle Text Formatter"
+    "EnhancedSubtitleBatchIterator": "Enhanced Subtitle Batch Iterator (批量模式)",
+    "SubtitleTextFormatter": "Subtitle Text Formatter",
+    "BatchIndexGenerator": "Batch Index Generator 🔢",
 }

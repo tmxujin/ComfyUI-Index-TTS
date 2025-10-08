@@ -13,6 +13,8 @@
 - 旁白自动标注为角色0
 - 输出字幕文本供后期使用
 - 整合解析和迭代功能于一体
+- 支持批量输出模式，ComfyUI会自动对每个片段执行一次工作流
+- 新增total_iterations输出，方便循环控制
 
 #### 输入参数
 
@@ -23,15 +25,12 @@
 
 #### 输出参数
 
-- `character_id`: 角色ID（STRING类型）
-- `mask_index`: 角色对应的mask索引（INT类型）
-- `start_time`: 字幕开始时间（FLOAT类型）
-- `end_time`: 字幕结束时间（FLOAT类型）
-- `subtitle_text`: 字幕文本内容（STRING类型）
-- `current_index`: 当前索引（INT类型）
-- `total_count`: 总字幕条数（INT类型）
-- `is_finished`: 是否处理完成（BOOLEAN类型）
-- `debug_info`: 调试信息（STRING类型）
+- `mask_index`: 角色对应的mask索引（INT类型，列表形式）
+- `character_id`: 角色ID（STRING类型，列表形式）
+- `start_time`: 字幕开始时间（FLOAT类型，列表形式）
+- `end_time`: 字幕结束时间（FLOAT类型，列表形式）
+- `subtitle_text`: 字幕文本内容（STRING类型，列表形式）
+- `total_iterations`: 总字幕条数（INT类型，单个值）
 
 #### 使用示例
 
@@ -78,6 +77,52 @@
 
 - `formatted_text`: 格式化后的文本（STRING类型）
 
+## 批量处理模式
+
+Enhanced Subtitle Batch Iterator节点现在支持批量处理模式，该模式具有以下优势：
+
+1. 一次性解析所有片段
+2. 返回列表而不是单个值
+3. ComfyUI会自动对每个元素执行一次工作流
+4. 新增total_iterations输出，方便循环节点使用
+
+### 工作流连接方式
+
+#### 方式A：直接批量处理（最简单）✅✅✅
+
+```
+[EnhancedSubtitleBatchIterator]
+    ↓ mask_index (列表: [1, 2, 3, 1, 2])
+[ImageMaskSwitch] 
+    ↓ (ComfyUI自动执行5次)
+[ImageResize]
+    ↓
+[SaveImage] (自动保存5张图片)
+```
+
+ComfyUI行为：
+
+- 检测到mask_index是列表 [1, 2, 3, 1, 2]
+- 自动执行5次工作流
+  - 第1次：select=1
+  - 第2次：select=2
+  - 第3次：select=3
+  - ...
+
+#### 方式B：配合循环节点（如果需要更多控制）
+
+```
+[EnhancedSubtitleBatchIterator]
+    ↓ total_iterations (单个整数: 5)
+[IteratorOpen] ← 连接total_iterations
+    ↓
+[IteratorCounter]
+    ↓ current_index
+[根据索引处理...]
+    ↓
+[IteratorClose]
+```
+
 ## 使用场景
 
 ### 数字人多角色对话
@@ -92,7 +137,84 @@
 
 ### 工作流示例
 
-项目中提供了一个示例工作流文件：`workflow/数字人字幕处理示例.json`，展示了如何使用这些节点。
+项目中提供了以下示例工作流文件：
+
+1. `workflow/数字人字幕处理示例.json` - 展示了如何使用这些节点
+2. `workflow/数字人批量处理循环工作流.json` - 展示了如何使用批量处理模式
+
+### 执行示例
+
+#### 输入字幕
+
+```json
+{
+  "segments": [
+    {"id": "Character1", "start": "0:00.000", "end": "0:03.000"},
+    {"id": "Character2", "start": "0:03.000", "end": "0:06.000"},
+    {"id": "Character3", "start": "0:06.000", "end": "0:09.000"},
+    {"id": "Character4", "start": "0:09.000", "end": "0:12.000"}
+  ]
+}
+```
+
+#### 节点输出
+
+```
+mask_index = [1, 2, 3, 4]
+character_id = ["Character1", "Character2", "Character3", "Character4"]
+start_time = [0.0, 3.0, 6.0, 9.0]
+end_time = [3.0, 6.0, 9.0, 12.0]
+total_iterations = 4
+```
+
+#### ComfyUI执行
+
+1. 第1次执行:
+   - ImageMaskSwitch.select = 1 → 输出Character1图片
+   - SaveImage → ComfyUI_Character1_00001.png
+
+2. 第2次执行:
+   - ImageMaskSwitch.select = 2 → 输出Character2图片
+   - SaveImage → ComfyUI_Character1_00002.png
+
+3. 第3次执行:
+   - ImageMaskSwitch.select = 3 → 输出Character3图片
+   - SaveImage → ComfyUI_Character1_00003.png
+
+4. 第4次执行:
+   - ImageMaskSwitch.select = 4 → 输出Character4图片
+   - SaveImage → ComfyUI_Character1_00004.png
+
+## 重要注意事项
+
+### 内存占用
+
+- 所有片段会同时加载到内存
+- 如果片段数>100，建议分批处理或使用Python脚本
+
+### SaveImage节点
+
+- 会自动为每个批次生成不同文件名
+- 格式：prefix_00001.png, prefix_00002.png, ...
+
+### 调试输出
+
+节点会在控制台打印详细信息：
+```
+✅ 批量模式启动: 4 个片段
+  [1/4] 角色Character1 (mask=1) | 0.00s-3.00s | 文本内容...
+  [2/4] 角色Character2 (mask=2) | 3.00s-6.00s | 文本内容...
+  ...
+```
+
+## 立即测试
+
+1. 替换代码 - 覆盖subtitle_processor.py
+2. 重启ComfyUI
+3. 打开工作流 - 不需要修改连接
+4. Queue Prompt - 自动批处理所有片段
+
+完成！🎉
 
 ## 注意事项
 
