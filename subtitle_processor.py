@@ -256,13 +256,3 @@ class SubtitleTextFormatter:
         ms = int((seconds % 1) * 1000)
         return f"{h:02d}:{m:02d}:{s:02d}.{ms:03d}"
 
-
-# --- 节点注册 ---
-NODE_CLASS_MAPPINGS = {
-    "EnhancedSubtitleBatchIterator": EnhancedSubtitleBatchIterator,
-    "SubtitleTextFormatter": SubtitleTextFormatter,
-}
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "EnhancedSubtitleBatchIterator": "Enhanced Subtitle Batch Iterator",
-    "SubtitleTextFormatter": "Subtitle Text Formatter",
-}
